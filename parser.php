@@ -49,7 +49,7 @@ if (is_dir($dir)) {
 			if (!$thedate) {
 				die('Error parsing the date on the first line of this file: '.$file."\n");
 			}
-			$thedate_string = date('Y-m-d');
+			$thedate_string = date('Y-m-d', $thedate);
 			if (array_key_exists($thedate_string, $all_the_logs)) {
 				die('Oops, it looks like this date has already been parsed in a different file: '.$thedate_string."\n".'Crashing now.'."\n");
 			}
