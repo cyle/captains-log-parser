@@ -18,6 +18,7 @@ lines 5-n: a list of lines, each line being an item you worked on that day
 
 for each of those items, each on a single line, you can include the following:
 
+- if you put a dash (-) and then a space, the parser will ignore it.
 - the time spent doing the thing in brackets, i.e. [1 hour] or [1h30m] or [9:00am - 1:00pm] or [9am to 11am]
 - a footprints ticket ID or project ID associated with it, enclosed in curly braces, the first number being the workspace and the second number being the ticket number i.e. {1#6112} is Help Desk workspace ticket ID 6112
 - if you include "meeting" in the line item, it'll count as a meeting
