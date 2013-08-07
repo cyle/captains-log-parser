@@ -143,16 +143,21 @@ if (is_dir($dir)) {
 			
 			// save the day to the big array of logs!
 			$all_the_logs[$thedate_string] = $day;
+			
+			echo 'Successfully parsed '.$file."\n";
         }
         closedir($dh); // close the directory, we are DONE
 		
 		// go through all of the log entries and find some things
 		$all_the_logs['total_time'] = 0;
 		$all_the_logs['total_meetings'] = 0;
-		foreach ($all_the_logs as $log_entry) {
-			$all_the_logs['total_time'] += $log_entry['total_time'];
-			foreach ($log_entry['did'] as $list_entry) {
-				if ($list_entry['meeting'] == true) { $all_the_logs['total_meetings']++; }
+		foreach ($all_the_logs as $log_entry_key => $log_entry) {
+			// only do this for the log entries
+			if (preg_match('/\d{4}-\d{2}-\d{2}/', $log_entry_key) === 1) {
+				$all_the_logs['total_time'] += $log_entry['total_time'];
+				foreach ($log_entry['did'] as $list_entry) {
+					if ($list_entry['meeting'] == true) { $all_the_logs['total_meetings']++; }
+				}
 			}
 		}
 				
