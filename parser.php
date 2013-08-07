@@ -8,6 +8,8 @@ if (php_sapi_name() != 'cli') {
 	die('Sorry, this can only be run via the command line.');
 }
 
+date_default_timezone_set('US/Eastern');
+
 echo "Captain's Log Parser! \n";
 
 if (!isset($argv) || count($argv) < 2) {
