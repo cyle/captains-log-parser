@@ -35,7 +35,7 @@ if (is_dir($dir)) {
 			if (substr($file, -4) != '.txt') {
 				continue; // only parse .txt files
 			}
-            echo 'file to parse: '.$file."\n";
+			echo 'file to parse: '.$file."\n";
 			$raw = file_get_contents($dir.'/'.$file); // get those file contents
 			$raw = trim($raw); // trim out any white space now
 			if (strpos("\r\n", $raw) !== false) { $raw = str_replace("\r", "", $raw); } // if the file line endings are WINDOWS based, get rid of em
@@ -62,6 +62,7 @@ if (is_dir($dir)) {
 			$day['notes'] = ''; // place to put notes
 			$day['total_time'] = 0; // time spent DOING THINGS!
 			$day['total_meetings'] = 0; // how many meetings did you go to?
+			$day['total_meeting_time'] = 0; // how much time was spent in meetings?
 			
 			// okay, let's go through the lines
 			$at_the_list = false; // take note of when we get past the list and enter the notes section
@@ -127,6 +128,7 @@ if (is_dir($dir)) {
 						if (stripos($line, 'meeting') !== false) {
 							$activity['meeting'] = true;
 							$day['total_meetings']++;
+							$day['total_meeting_time'] += $activity['time'];
 						}
 						$activity['info'] = trim($line);
 						$day['did'][] = $activity;
@@ -152,18 +154,44 @@ if (is_dir($dir)) {
 		
 		// go through all of the log entries and find some things
 		$all_the_logs['total_time'] = 0;
+		$all_the_logs['total_meetings_time'] = 0;
 		$all_the_logs['total_meetings'] = 0;
 		$all_the_logs['total_days'] = 0;
+		$all_the_logs['activity_words'] = array();
 		foreach ($all_the_logs as $log_entry_key => $log_entry) {
 			// only do this for the log entries
 			if (preg_match('/\d{4}-\d{2}-\d{2}/', $log_entry_key) === 1) {
 				$all_the_logs['total_time'] += $log_entry['total_time'];
 				$all_the_logs['total_days']++;
 				foreach ($log_entry['did'] as $list_entry) {
-					if ($list_entry['meeting'] == true) { $all_the_logs['total_meetings']++; }
+					if ($list_entry['meeting'] == true) {
+						$all_the_logs['total_meetings']++;
+						$all_the_logs['total_meetings_time'] += $list_entry['time'];
+					}
+					if (isset($list_entry['info']) && trim($list_entry['info']) != '') {
+						$this_activity_words = explode(' ', $list_entry['info']);
+						foreach ($this_activity_words as $this_activity_word) {
+							$this_word = trim(strtolower($this_activity_word));
+							if (!isset($all_the_logs['activity_words'][$this_word])) {
+								$all_the_logs['activity_words'][$this_word] = 1;
+							} else {
+								$all_the_logs['activity_words'][$this_word]++;
+							}
+						}
+					}
+					
 				}
 			}
 		}
+		
+		// cut down on the number of words...
+		foreach ($all_the_logs['activity_words'] as $word => $count) {
+			if ($count < 10) {
+				unset($all_the_logs['activity_words'][$word]);
+			}
+		}
+		
+		arsort($all_the_logs['activity_words']);
 				
 		// okay, all parsed
 		print_r($all_the_logs); // show it off
