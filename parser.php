@@ -157,13 +157,21 @@ if (is_dir($dir)) {
 		$all_the_logs['total_meetings_time'] = 0;
 		$all_the_logs['total_meetings'] = 0;
 		$all_the_logs['total_days'] = 0;
+		$all_the_logs['total_activities'] = 0;
 		$all_the_logs['activity_words'] = array();
+		$all_the_logs['activities_per_day_max'] = 0;
+		$all_the_logs['activities_per_day_max_date'] = '';
 		foreach ($all_the_logs as $log_entry_key => $log_entry) {
 			// only do this for the log entries
 			if (preg_match('/\d{4}-\d{2}-\d{2}/', $log_entry_key) === 1) {
 				$all_the_logs['total_time'] += $log_entry['total_time'];
 				$all_the_logs['total_days']++;
+				if (count($log_entry['did']) > $all_the_logs['activities_per_day_max']) {
+					$all_the_logs['activities_per_day_max'] = count($log_entry['did']);
+					$all_the_logs['activities_per_day_max_date'] = $log_entry_key;
+				}
 				foreach ($log_entry['did'] as $list_entry) {
+					$all_the_logs['total_activities']++;
 					if ($list_entry['meeting'] == true) {
 						$all_the_logs['total_meetings']++;
 						$all_the_logs['total_meetings_time'] += $list_entry['time'];
