@@ -10,7 +10,9 @@ This is a parser for those text files. The parser goes through a given directory
 
 ## parser usage
 
-Simply run `./parser.php name_of_directory/` where that directory path name is where your text files are stored. That's it!
+You need to have a command-line version of PHP installed. Most every Mac already has this (just open Terminal and type `php -v`). If you're on Ubuntu, just run `sudo apt-get install php5-cli`. If you're on Windows, I got nothing for you here.
+
+Simply run `php parser.php name_of_directory/` where that directory path name is where your text files are stored. That's it!
 
 The parser does not modify your files in any way, it just reads them.
 
