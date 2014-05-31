@@ -60,6 +60,6 @@ lines n+4 and beyond: whatever additional notes you want to add about the day. i
 
 ## what you get at the end
 
-when it's all done parsing, you will have a massive PHP array of everything you did, how much time it took per item, what tickets/workspaces were involved, how much time you spent working per day, and how much time you spent working over all of the logs, as well as how many meetings you attended per day or of all time.
+when it's all done parsing, you will have a massive PHP array of everything you did, how much time it took per item, what tickets/workspaces were involved, how much time you spent working per day, and how much time you spent working over all of the logs, as well as how many meetings you attended per day or of all time. you also get a list of the "most often used" words in your activity lists.
 
 basically it makes something that's easily storable in a database or exported to JSON/XML or reported on for metrics. or it's just neat info to have.
